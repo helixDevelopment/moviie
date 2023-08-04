@@ -1,3 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.body {
+	
+}
+
+@layer components {
+	.page-container {
+		@apply flex min-h-screen flex-col items-center mx-auto w-full p-2 sm:p-4 md:max-w-2xl max-w-7xl
+	}
+}
