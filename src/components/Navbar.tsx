@@ -14,9 +14,9 @@ export default function Navbar({ selected }: NavbarProps) {
 		</Link>;
 	}
 	
-	return (<nav className="fixed top-0 mx-auto h-[4rem] px-8 sm:px-4 w-full sm:max-w-2xl ">
-		<div className="relative bg-red-100 w-full h-full flex flex-row items-center">
-			<p className="absolute">Moviee</p>
+	return (<nav className="fixed top-0 mx-auto responsive-width mt-2 sm:mt-0 px-8">
+		<div className="relative responsive-width py-0 bg-red-100/20 w-full h-full flex flex-row items-center">
+			<p className="absolute font-bold text-4xl hidden sm:block">Moviee</p>
 			<div className="mx-auto">
 				<NavLink link="/" label="Library" />
 				<NavLink link="/explore" label="Explore" />
