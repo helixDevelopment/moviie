@@ -58,8 +58,8 @@ const movies = [
 ]
 
 export default function Home() {
-    const [movieModal, setOpen] = useState(false);
 
+    
     return (
         <>
             <Head>
