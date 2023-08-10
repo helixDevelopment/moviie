@@ -4,19 +4,39 @@ import Link from "next/link";
 import Footer from "~/components/Footer";
 import Navbar from "~/components/Navbar";
 import MovieCard from "~/components/MovieCard";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
+import { useQuery } from 'react-query';
+import { MovieResult } from "moviedb-promise";
 
 function Explore() {
-    interface Movie {
-        name: string,
-        image: string
+	const [popular, setPopular] = useState<MovieResult[]>([]);
+    const [toprated, setToprated] = useState<MovieResult[]>([]);
+	const [fetched, setFetched] = useState(false);
+
+    interface ExploreData {
+        popular: MovieResult[],
     }
 
-	const [popular, setPopular] = useState<Movie[]>([]);
-	const [loading, setLoading] = useState(true);
 
-    
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-assignment
+    const { isLoading, error, data } = useQuery('exploreData', () =>
+        fetch('/api/explore').then(res => res.json())
+    , {
+        refetchOnMount: false,
+        refetchOnWindowFocus: false,
+        refetchOnReconnect: false,
+    })
+
+    useEffect(() => {
+        if (!fetched && data && !isLoading && !error) {
+            setFetched(true);
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+            const movies = data?.data as MovieResult[];
+            setPopular(movies);
+            setToprated(movies);
+        }
+    }, [fetched, data, isLoading, error]);
 
 	return (
         <>
@@ -33,7 +53,7 @@ function Explore() {
                     <div className="overflow-x-scroll">
                         <div className="flex w-fit">
                         {
-                            popular.map((movie, index) => <MovieCard key={index} name={movie.name} image={movie.image} />)
+                            popular.map((movie, index) => <MovieCard key={index} data={movie} />)
                         }
                         </div>
                     </div>
@@ -42,7 +62,7 @@ function Explore() {
                     <div className="overflow-x-scroll">
                         <div className="flex w-fit">
                         {
-                            movies.map((movie, index) => <MovieCard key={index} name={movie.name} image={movie.image} />)
+                            toprated.map((movie, index) => <MovieCard key={index} name={movie.name} image={movie.image} />)
                         }
                         </div>
                     </div>
