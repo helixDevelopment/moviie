@@ -33,13 +33,13 @@ function MovieCard({ data }: MovieProps) {
 	} else {
 		return (
 			<div className="relative ease-in-out flex-shrink-0 w-[6rem] h-[9rem] sm:w-[10rem] sm:h-[15rem] bg-slate-200 m-2 rounded-md drop-shadow-md border-[1px]" onClick={click}>
-				<Dialog visible={isOpen} header={data?.title} onHide={click} className="w-[90%] sm:w-[80%] max-w-xl h-fit">
+				<Dialog visible={isOpen} headerClassName="bg-red-500" header={data?.title} onHide={click} className="w-[90%] sm:w-[80%] max-w-xl h-fit">
 					<div className="flex flex-col w-full h-full bg-hsl(0, 0%, 100%)">
-						<div className="flex flex-row w-full">
-							<div className="w-full max-w-[10rem] p-2">
+						<div className="flex flex-col sm:flex-row w-full">
+							<div className="w-full max-w-[10rem] mx-auto sm:mx-0">
 								<img src={"https://image.tmdb.org/t/p/w500" + data?.poster_path} alt={data?.title} className="w-full rounded-md"></img>
 							</div>
-							<div className="p-2 w-fit">
+							<div className="pt-4 sm:pt-0 pl-0 sm:pl-4 w-fit">
 								<p>{data?.overview}</p>
 							</div>
 						</div>
