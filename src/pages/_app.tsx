@@ -5,13 +5,25 @@ import { QueryClient, QueryClientProvider } from "react-query";
 // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-assignment
 const queryClient: QueryClient = new QueryClient();
 
-const MyApp: AppType = ({ Component, pageProps }) => {
+
+import { PrimeReactProvider } from 'primereact/api';
+
+//theme
+import "primereact/resources/themes/lara-light-indigo/theme.css";     
     
+//core
+import "primereact/resources/primereact.min.css";                                       
+        
+
+const MyApp: AppType = ({ Component, pageProps }) => {
+
     return (
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        <QueryClientProvider client={queryClient}>
-            <Component {...pageProps} />
-        </QueryClientProvider>
+        <PrimeReactProvider>
+            <QueryClientProvider client={queryClient}>
+                <Component {...pageProps} />
+            </QueryClientProvider>
+        </PrimeReactProvider>
     )
 };
 

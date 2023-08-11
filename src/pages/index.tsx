@@ -1,5 +1,4 @@
 import Head from "next/head";
-import Link from "next/link";
 
 import Footer from "~/components/Footer";
 import Navbar from "~/components/Navbar";
@@ -75,7 +74,7 @@ export default function Home() {
                     <div className="overflow-x-scroll">
                         <div className="flex w-fit">
                         {
-                            movies.map((movie, index) => <MovieCard key={index} name={movie.name} image={movie.image} />)
+                            //movies.map((movie, index) => <MovieCard key={index} name={movie.name} image={movie.image} />)
                         }
                         </div>
                     </div>
@@ -84,7 +83,7 @@ export default function Home() {
                     <div className="overflow-x-scroll">
                         <div className="flex w-fit">
                         {
-                            movies.map((movie, index) => <MovieCard key={index} name={movie.name} image={movie.image} />)
+                            //movies.map((movie, index) => <MovieCard key={index} data={movie} />)
                         }
                         </div>
                     </div>

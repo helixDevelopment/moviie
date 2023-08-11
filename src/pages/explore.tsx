@@ -1,5 +1,4 @@
 import Head from "next/head";
-import Link from "next/link";
 
 import Footer from "~/components/Footer";
 import Navbar from "~/components/Navbar";
@@ -9,25 +8,15 @@ import { useEffect, useState } from "react";
 import { useQuery } from 'react-query';
 import { type MovieResult } from "moviedb-promise";
 import axios from 'axios';
+import { type ExploreData, loadingMovies } from "~/lib/utils";
 
 function Explore() {
-	const [popular, setPopular] = useState<MovieResult[]>([]);
-    const [toprated, setToprated] = useState<MovieResult[]>([]);
+	const [popular, setPopular] = useState<MovieResult[]>(loadingMovies);
+    const [toprated, setToprated] = useState<MovieResult[]>(loadingMovies);
+    const [nowplaying, setNowplaying] = useState<MovieResult[]>(loadingMovies);
 
-    interface ExploreData {
-        data: MovieResult[];
-    }
-
-    const popularData = useQuery('popular', () =>
-        axios.get('/api/popular').then(res => res.data as MovieResult[])
-    , {
-        refetchOnMount: false,
-        refetchOnWindowFocus: false,
-        refetchOnReconnect: false,
-    });
-
-    const topRatedData = useQuery('toprated', () =>
-        axios.get('/api/toprated').then(res => res.data as MovieResult[])
+    const exploreData = useQuery('exploreData', () =>
+        axios.get('/api/explore').then(res => res.data as MovieResult[])
     , {
         refetchOnMount: false,
         refetchOnWindowFocus: false,
@@ -35,21 +24,17 @@ function Explore() {
     });
 
     useEffect(() => {
-        console.log(popularData);
-        if (!popularData.isLoading && !popularData.error) {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            console.log(popularData.data);
-            const movies = (popularData.data as unknown as ExploreData).data ?? [];
-            setPopular(movies);
-        }
+        console.log(exploreData);
+        if (!exploreData.isLoading && !exploreData.error) {
 
-        if (!topRatedData.isLoading && !topRatedData.error) {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            console.log(topRatedData.data);
-            const movies = (topRatedData.data as unknown as ExploreData).data ?? [];
-            setToprated(movies);
+            console.log(exploreData.data);
+            const movies = (exploreData.data as unknown as ExploreData);
+
+            setPopular(movies.popular);
+            setToprated(movies.toprated);
+            setNowplaying(movies.nowplaying);
         }
-    }, [popularData, topRatedData]);
+    }, [exploreData]);
 
 	return (
         <>
@@ -62,7 +47,7 @@ function Explore() {
             <main id="app" className="page-container">
                 <div className="h-10 w-full"></div>
                 <div className="flex flex-col w-full py-16">
-                    <p className="text-3xl font-bold pl-4">Popular</p>
+                    <p className="text-3xl font-bold pl-2 text-slate-700 select-none">Popular</p>
                     <div className="overflow-x-scroll">
                         <div className="flex w-fit">
                         {
@@ -71,11 +56,20 @@ function Explore() {
                         </div>
                     </div>
 
-                    <p className="text-3xl font-bold pl-4 mt-8">Top Rated</p>
+                    <p className="text-3xl font-bold pl-2 mt-8 text-slate-700 select-none">Top Rated</p>
                     <div className="overflow-x-scroll">
                         <div className="flex w-fit">
                         {
                             toprated.map((movie, index) => <MovieCard key={index} data={movie} />)
+                        }
+                        </div>
+                    </div>
+
+                    <p className="text-3xl font-bold pl-2 mt-8 text-slate-700 select-none">Now Playing</p>
+                    <div className="overflow-x-scroll">
+                        <div className="flex w-fit">
+                        {
+                            nowplaying.map((movie, index) => <MovieCard key={index} data={movie} />)
                         }
                         </div>
                     </div>
