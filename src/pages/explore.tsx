@@ -7,36 +7,49 @@ import MovieCard from "~/components/MovieCard";
 import { useEffect, useState } from "react";
 
 import { useQuery } from 'react-query';
-import { MovieResult } from "moviedb-promise";
+import { type MovieResult } from "moviedb-promise";
+import axios from 'axios';
 
 function Explore() {
 	const [popular, setPopular] = useState<MovieResult[]>([]);
     const [toprated, setToprated] = useState<MovieResult[]>([]);
-	const [fetched, setFetched] = useState(false);
 
     interface ExploreData {
-        popular: MovieResult[],
+        data: MovieResult[];
     }
 
-
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-assignment
-    const { isLoading, error, data } = useQuery('exploreData', () =>
-        fetch('/api/explore').then(res => res.json())
+    const popularData = useQuery('popular', () =>
+        axios.get('/api/popular').then(res => res.data as MovieResult[])
     , {
         refetchOnMount: false,
         refetchOnWindowFocus: false,
         refetchOnReconnect: false,
-    })
+    });
+
+    const topRatedData = useQuery('toprated', () =>
+        axios.get('/api/toprated').then(res => res.data as MovieResult[])
+    , {
+        refetchOnMount: false,
+        refetchOnWindowFocus: false,
+        refetchOnReconnect: false,
+    });
 
     useEffect(() => {
-        if (!fetched && data && !isLoading && !error) {
-            setFetched(true);
+        console.log(popularData);
+        if (!popularData.isLoading && !popularData.error) {
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            const movies = data?.data as MovieResult[];
+            console.log(popularData.data);
+            const movies = (popularData.data as unknown as ExploreData).data ?? [];
             setPopular(movies);
+        }
+
+        if (!topRatedData.isLoading && !topRatedData.error) {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+            console.log(topRatedData.data);
+            const movies = (topRatedData.data as unknown as ExploreData).data ?? [];
             setToprated(movies);
         }
-    }, [fetched, data, isLoading, error]);
+    }, [popularData, topRatedData]);
 
 	return (
         <>
@@ -62,7 +75,7 @@ function Explore() {
                     <div className="overflow-x-scroll">
                         <div className="flex w-fit">
                         {
-                            toprated.map((movie, index) => <MovieCard key={index} name={movie.name} image={movie.image} />)
+                            toprated.map((movie, index) => <MovieCard key={index} data={movie} />)
                         }
                         </div>
                     </div>

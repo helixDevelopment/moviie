@@ -8,8 +8,6 @@ interface Data {
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
-	console.log("API: /api/explore");
-
 	try {
 		const data = await moviedb.moviePopular();
 		const movies = data.results ?? [];

@@ -6,7 +6,7 @@ type MovieProps = PropsWithRef<{
 }>;
 
 function MovieCard({ data }: MovieProps) {
-	return (<div className="relative ease-in-outflex-shrink-0 w-[10rem] h-[15rem] bg-slate-200 m-2 rounded-md drop-shadow-md">
+	return (<div className="relative ease-in-out flex-shrink-0 w-[10rem] h-[15rem] bg-slate-200 m-2 rounded-md drop-shadow-md border-[1px] ">
 		<div className="w-full absolute">
 			<img src={"https://image.tmdb.org/t/p/w500" + data?.poster_path} alt={data?.title} className="w-full rounded-md"></img>
 		</div>
