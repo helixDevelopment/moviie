@@ -3,61 +3,13 @@ import Head from "next/head";
 import Footer from "~/components/Footer";
 import Navbar from "~/components/Navbar";
 import MovieCard from "~/components/MovieCard";
+import { type MovieResult } from "moviedb-promise";
 import { useState } from "react";
-
-const movies = [
-    {
-        name: "The Shawshank Redemption",
-        image: "https://images-na.ssl-images-amazon.com/images/I/51NpxWJQ5QL._AC_.jpg",
-    },
-    {
-        name: "The Godfather",
-        image: "https://images-na.ssl-images-amazon.com/images/I/51NpxWJQ5QL._AC_.jpg",
-    },
-    {
-        name: "The Dark Knight",
-        image: "https://images-na.ssl-images-amazon.com/images/I/51NpxWJQ5QL._AC_.jpg",
-    },
-    {
-        name: "The Shawshank Redemption",
-        image: "https://images-na.ssl-images-amazon.com/images/I/51NpxWJQ5QL._AC_.jpg",
-    },
-    {
-        name: "The Godfather",
-        image: "https://images-na.ssl-images-amazon.com/images/I/51NpxWJQ5QL._AC_.jpg",
-    },
-    {
-        name: "The Dark Knight",
-        image: "https://images-na.ssl-images-amazon.com/images/I/51NpxWJQ5QL._AC_.jpg",
-    },
-    {
-        name: "The Shawshank Redemption",
-        image: "https://images-na.ssl-images-amazon.com/images/I/51NpxWJQ5QL._AC_.jpg",
-    },
-    {
-        name: "The Godfather",
-        image: "https://images-na.ssl-images-amazon.com/images/I/51NpxWJQ5QL._AC_.jpg",
-    },
-    {
-        name: "The Dark Knight",
-        image: "https://images-na.ssl-images-amazon.com/images/I/51NpxWJQ5QL._AC_.jpg",
-    },
-    {
-        name: "The Shawshank Redemption",
-        image: "https://images-na.ssl-images-amazon.com/images/I/51NpxWJQ5QL._AC_.jpg",
-    },
-    {
-        name: "The Godfather",
-        image: "https://images-na.ssl-images-amazon.com/images/I/51NpxWJQ5QL._AC_.jpg",
-    },
-    {
-        name: "The Dark Knight",
-        image: "https://images-na.ssl-images-amazon.com/images/I/51NpxWJQ5QL._AC_.jpg",
-    },
-]
+import { loadingMovies } from "~/lib/utils";
 
 export default function Home() {
-
+    const [recent, setRecent] = useState<MovieResult[]>(loadingMovies);
+    const [favorites, setFavorites] = useState<MovieResult[]>(loadingMovies);
     
     return (
         <>
@@ -74,7 +26,7 @@ export default function Home() {
                     <div className="overflow-x-scroll">
                         <div className="flex w-fit">
                         {
-                            //movies.map((movie, index) => <MovieCard key={index} name={movie.name} image={movie.image} />)
+                            recent.map((movie, index) => <MovieCard key={index} data={movie} />)
                         }
                         </div>
                     </div>
@@ -83,7 +35,7 @@ export default function Home() {
                     <div className="overflow-x-scroll">
                         <div className="flex w-fit">
                         {
-                            //movies.map((movie, index) => <MovieCard key={index} data={movie} />)
+                            favorites.map((movie, index) => <MovieCard key={index} data={movie} />)
                         }
                         </div>
                     </div>
