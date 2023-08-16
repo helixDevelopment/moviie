@@ -11,11 +11,27 @@ datasource db {
 }
 
 model Movie {
-    id          String      @id
+    id          String      
+    userID      String      
+    user        User        @relation("userMovies", fields: [userID], references: [id])
+
+    starred     Boolean     @default(false)
+    rating      Int         @default(0)
+    notes       String      @default("")
+    review      String      @default("")
 
     watched     Boolean     @default(false)
+    watchDate   DateTime?   @default(now())
     watching    Boolean     @default(false)
-    rating      Int         @default(0)
-    review      String      @default("")
-    notes       String      @default("")
+
+    @@id([id, userID])
+}
+
+model User {
+    id          String      @id
+
+    username    String      @unique
+    hashPw      String      // (Hashed password)
+
+    movies      Movie[]     @relation("userMovies")
 }

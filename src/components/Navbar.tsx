@@ -39,7 +39,7 @@ function Navbar({ selected }: NavbarProps) {
 		<div className="relative mx-auto responsive-width py-0 w-full h-full flex flex-row items-center">
 			<p className="absolute font-bold text-4xl hidden sm:block">Moviee</p>
 
-			<div className="flex flew-row w-full md:w-fit md:mx-auto">
+			<div className="flex flew-row w-full md:mx-auto">
 				<form className="flex flex-row max-w-[20rem] mx-auto">
 					<input className="w-full lg:w-[20rem] p-3 py-1 my-1 rounded-full pl-8 border-2 border-black" type="text" placeholder="Search" />
 					<button type="submit" className="absolute ml-1 mt-[0.9rem]">
@@ -47,20 +47,20 @@ function Navbar({ selected }: NavbarProps) {
 					</button>
 				</form>
 
-				<button className="block md:hidden" onClick={openSidebar}>
+				<button className="right-0" onClick={openSidebar}>
 					<Icon icon="ion:menu-sharp" className="w-8 h-8" />
 				</button>
 			</div>
 
-			<div className="absolute hidden md:block right-0 bg mr-4 lg:mr-8">
+			{/* <div className="absolute hidden md:block right-0 bg mr-4 lg:mr-8">
 				{links}
-			</div>
+			</div> */}
 		</div>
 
 {/* 		<div className="fixed z-[40] top-0 left-0 w-[100vw] h-[100vh] bg-red-300 opacity-20"></div>
  */}
-		<aside className={clsx("fixed transition-all ease-in-out duration-200 z-50 p-4 top-0 right-0 w-full sm:w-[20rem] h-[100vh] bg-slate-300", {
-			'translate-x-[20rem]': !sidebarOpen,
+		<aside className={clsx("fixed transition-all ease-in-out duration-200 z-50 p-4 top-0 right-0 w-full xs:w-[20rem] h-[100vh] bg-slate-300", {
+			'translate-x-[100vw]': !sidebarOpen,
 		})}>
 			<button onClick={closeSidebar}>
 			<Icon icon="ion:close-sharp" className="absolute top-0 right-0 w-8 h-8 m-4" />
