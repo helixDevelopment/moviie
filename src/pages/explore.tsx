@@ -24,7 +24,6 @@ function Explore() {
     });
 
     useEffect(() => {
-        console.log(exploreData);
         if (!exploreData.isLoading && !exploreData.error) {
 
             console.log(exploreData.data);
