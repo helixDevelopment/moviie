@@ -71,9 +71,9 @@ function Navbar({ selected }: NavbarProps) {
 			<p className="absolute font-bold text-4xl hidden sm:block">Moviee</p>
 
 			<div className="flex flew-row w-full md:mx-auto">
-				<form className="flex flex-row max-w-[20rem] mx-auto">
+				<form className="flex flex-row w-full xs:w-fit xs:mx-auto">
 					<div className="w-full relative">
-						<input className="w-full md:w-[20rem] p-3 py-1 my-1 rounded-full pl-8 border-2 border-black" type="text" placeholder="Search" onChange={(e) => debounced(e.target.value)} />
+						<input className="w-full xs:w-[20rem] md:w-[24rem] p-3 py-1 my-1 rounded-full pl-8 border-2 border-black" type="text" placeholder="Search" onChange={(e) => debounced(e.target.value)} />
 						<div className="absolute w-full">
 							{search}
 						</div>
@@ -83,7 +83,7 @@ function Navbar({ selected }: NavbarProps) {
 					</button>
 				</form>
 
-				<button className="right-0" onClick={openSidebar}>
+				<button className="right-0 pl-4" onClick={openSidebar}>
 					<Icon icon="ion:menu-sharp" className="w-8 h-8" />
 				</button>
 			</div>
