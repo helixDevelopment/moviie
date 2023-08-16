@@ -13,8 +13,6 @@ type MovieProps = PropsWithRef<{
 function MovieCard({ data }: MovieProps) {
 	const loaded = !!data?.title;
 
-	//const options = ['Not Seen', 'Seen'];
-
 	const [seen, setSeen] = useState(false);
 	const [isOpen, setIsOpen] = useState(false);
 

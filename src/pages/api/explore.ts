@@ -5,6 +5,8 @@ import { type ExploreData } from "~/lib/utils";
 const moviedb = new MovieDb(process.env.TMDB_KEY!);
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ExploreData>) {
+	if (req.method !== "GET") return res.status(405);
+
 	try {
 		const popular = await moviedb.moviePopular();
 		const toprated = await moviedb.movieTopRated();
