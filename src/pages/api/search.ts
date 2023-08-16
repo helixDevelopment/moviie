@@ -16,7 +16,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 			query: req.body.query as string,
 		});
 
-		res.status(200).json({ results: (results.results ?? []).slice(0, 5) });
+		res.status(200).json({
+			results: (results.results ?? []).slice(0, 10).sort((a, b) => b.popularity! - a.popularity!)
+		});
 	} catch (error) {
 		console.error(error);
 		res.status(500);

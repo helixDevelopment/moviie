@@ -74,7 +74,7 @@ function Navbar({ selected }: NavbarProps) {
 				<form className="flex flex-row w-full xs:w-fit xs:mx-auto">
 					<div className="w-full relative">
 						<input className="w-full xs:w-[20rem] md:w-[24rem] p-3 py-1 my-1 rounded-full pl-8 border-2 border-black" type="text" placeholder="Search" onChange={(e) => debounced(e.target.value)} />
-						<div className="absolute w-full">
+						<div className="absolute w-full bg-slate-100 shadow-lg max-h-[20rem] overflow-y-scroll">
 							{search}
 						</div>
 					</div>

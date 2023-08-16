@@ -18,6 +18,11 @@ const config = {
         locales: ["en"],
         defaultLocale: "en",
     },
+
+    // image host names
+    images: {
+        domains: ["image.tmdb.org"],
+    },
 };
 
 export default config;
