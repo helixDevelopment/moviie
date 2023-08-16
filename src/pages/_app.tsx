@@ -9,21 +9,27 @@ const queryClient: QueryClient = new QueryClient();
 import { PrimeReactProvider } from 'primereact/api';
 
 //theme
-import "primereact/resources/themes/lara-light-indigo/theme.css";     
-    
+import "primereact/resources/themes/lara-light-indigo/theme.css";
+
 //core
-import "primereact/resources/primereact.min.css";                                       
-        
+import "primereact/resources/primereact.min.css";
+
+import { ThemeProvider } from "next-themes";
 
 const MyApp: AppType = ({ Component, pageProps }) => {
 
     return (
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        <PrimeReactProvider>
-            <QueryClientProvider client={queryClient}>
-                <Component {...pageProps} />
-            </QueryClientProvider>
-        </PrimeReactProvider>
+        <ThemeProvider
+            attribute="class"
+            value={{ light: "light", dark: "dark" }}
+            defaultTheme="system"
+        >
+            <PrimeReactProvider>
+                <QueryClientProvider client={queryClient}>
+                    <Component {...pageProps} />
+                </QueryClientProvider>
+            </PrimeReactProvider>
+        </ThemeProvider>
     )
 };
 

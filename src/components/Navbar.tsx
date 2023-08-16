@@ -8,6 +8,8 @@ import { useDebouncedCallback } from 'use-debounce';
 import axios from "axios";
 import { MovieResult } from "moviedb-promise";
 import SearchResult from "./SearchResult";
+import { useTheme } from "next-themes";
+import { UseThemeProps } from "next-themes/dist/types";
 
 type NavbarProps = PropsWithRef<{
 	selected: string;
@@ -17,6 +19,9 @@ function Navbar({ selected }: NavbarProps) {
 	const [sidebarOpen, setSidebarOpen] = useState(false);
 	const [searchResults, setSearchResults] = useState<MovieResult[]>([]);
 	const [searching, setSearching] = useState(false);
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
+	const { theme, setTheme }: UseThemeProps = useTheme() as UseThemeProps;
+
 
 	const debounced = useDebouncedCallback((value: string) => {
 		if (value.length == 0) {
@@ -85,6 +90,19 @@ function Navbar({ selected }: NavbarProps) {
 
 			</form>
 
+			{
+				theme == "light" ? (
+					<button className="right-0" onClick={() => setTheme("dark")}>
+						<Icon icon="tabler:moon" className="w-6 h-6" />
+					</button>
+				) : (
+					<button className="right-0" onClick={() => setTheme("light")}>
+						<Icon icon="tabler:sun" className="w-6 h-6" />
+					</button>
+				)
+			}
+
+
 			<button className="right-0 pl-4" onClick={() => setSidebarOpen(true)}>
 				<Icon icon="ion:menu-sharp" className="w-8 h-8" />
 			</button>
@@ -102,12 +120,12 @@ function Navbar({ selected }: NavbarProps) {
 			<button onClick={() => setSidebarOpen(false)}>
 				<Icon icon="ion:close-sharp" className="absolute top-0 right-0 w-8 h-8 m-4" />
 			</button>
+
 			<div className="mx-auto w-fit">
 				<div className="flex flex-col gap-4 mt-[20vh]">
-				{links}
-
-			</div></div>
-
+					{links}
+				</div>
+			</div>
 		</aside>
 	</nav>)
 }
