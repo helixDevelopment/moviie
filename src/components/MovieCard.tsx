@@ -25,11 +25,11 @@ function MovieCard({ data }: MovieProps) {
 	} */
 
 	if (!loaded) {
-		return (<div className="flex flex-col p-2 animate-pulse ease-in-out flex-shrink-0 w-[6rem] h-[9rem] sm:w-[10rem] sm:h-[15rem] bg-slate-100 m-2 rounded-md">
+		return (<div className="flex flex-col p-2 animate-pulse ease-in-out flex-shrink-0 w-[6rem] h-[9rem] sm:w-[10rem] sm:h-[15rem] bg-slate-100 dark:bg-slate-800 m-2 rounded-md">
 			<div className="flex h-full">
-				<Icon icon="bxs:movie" className="m-auto text-slate-200 w-10 h-10" />
+				<Icon icon="bxs:movie" className="m-auto text-slate-200 dark:text-slate-600 w-10 h-10" />
 			</div>
-			<div className="w-full h-6 rounded-md bg-slate-200">
+			<div className="w-full h-6 rounded-md bg-slate-200 dark:bg-slate-600">
 			</div>
 		</div>);
 	}
@@ -64,7 +64,7 @@ function MovieCard({ data }: MovieProps) {
 			</div>
 
 			<div className="absolute w-full h-full p-2 text-white transition-all opacity-0 hover:opacity-100 bg-black/70 rounded-md" onClick={click}>
-				<p className="text-center">{data?.title}</p>
+				<p className="text-center text-xs sm:text-base">{data?.title}</p>
 			</div>
 		</div>);
 }

@@ -6,21 +6,18 @@ import clsx from "clsx";
 
 import { useDebouncedCallback } from 'use-debounce';
 import axios from "axios";
-import { MovieResult } from "moviedb-promise";
+import { type MovieResult } from "moviedb-promise";
 import SearchResult from "./SearchResult";
-import { useTheme } from "next-themes";
-import { UseThemeProps } from "next-themes/dist/types";
-
+import ThemeSwitcher from "./ThemeSwitcher";
 type NavbarProps = PropsWithRef<{
 	selected: string;
 }>;
 
-function Navbar({ selected }: NavbarProps) {
+function Navbar({ }: NavbarProps) {
 	const [sidebarOpen, setSidebarOpen] = useState(false);
 	const [searchResults, setSearchResults] = useState<MovieResult[]>([]);
 	const [searching, setSearching] = useState(false);
-	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
-	const { theme, setTheme }: UseThemeProps = useTheme() as UseThemeProps;
+	
 
 
 	const debounced = useDebouncedCallback((value: string) => {
@@ -69,11 +66,11 @@ function Navbar({ selected }: NavbarProps) {
 		</Link>;
 	}
 
-	return (<nav className="fixed top-0 w-full py-4 bg-emerald-500 z-50">
+	return (<nav className="fixed top-0 w-full py-4 bg-emerald-500 dark:bg-emerald-900 z-50">
 		<div className="relative mx-auto responsive-width py-0 w-full h-full flex flex-row items-center">
-			<p className="font-bold text-4xl hidden sm:block mx-2">Moviee</p>
+			<p className="font-bold text-4xl hidden sm:block mx-2">Moviie</p>
 
-			<form className="flex flex-row w-full mx-2 justify-center">
+			<form className="flex flex-row w-full xs:mx-2 justify-center">
 				<div className="relative">
 					<input className="w-full xs:w-[20rem] md:w-[24rem] p-3 pr-8 py-1 my-1 rounded-full pl-8 border-2 border-#696565" type="text" placeholder="Search" onChange={(e) => debounced(e.target.value)} />
 					<div className="absolute w-full bg-slate-100 shadow-lg max-h-[20rem] overflow-y-scroll rounded-lg">
@@ -90,31 +87,16 @@ function Navbar({ selected }: NavbarProps) {
 
 			</form>
 
-			{
-				theme == "light" ? (
-					<button className="right-0" onClick={() => setTheme("dark")}>
-						<Icon icon="tabler:moon" className="w-6 h-6" />
-					</button>
-				) : (
-					<button className="right-0" onClick={() => setTheme("light")}>
-						<Icon icon="tabler:sun" className="w-6 h-6" />
-					</button>
-				)
-			}
+			<ThemeSwitcher />
 
-
-			<button className="right-0 pl-4" onClick={() => setSidebarOpen(true)}>
+			<button className="right-0 pl-2 sm:pl-4" onClick={() => setSidebarOpen(true)}>
 				<Icon icon="ion:menu-sharp" className="w-8 h-8" />
 			</button>
-
-			{/* <div className="absolute hidden md:block right-0 bg mr-4 lg:mr-8">
-				{links}
-			</div> */}
 		</div>
 
 		{/* 		<div className="fixed z-[40] top-0 left-0 w-[100vw] h-[100vh] bg-red-300 opacity-20"></div>
  */}
-		<aside className={clsx("fixed shadow-inner transition-all ease-in-out duration-200 z-50 p-4 top-0 right-0 w-full xs:w-[20rem] h-[100vh] bg-slate-300", {
+		<aside className={clsx("fixed shadow-inner transition-all ease-in-out duration-200 z-50 p-4 top-0 right-0 w-full xs:w-[20rem] h-[100vh] bg-slate-300 dark:bg-slate-700", {
 			'translate-x-[100vw]': !sidebarOpen,
 		})}>
 			<button onClick={() => setSidebarOpen(false)}>
