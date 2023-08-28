@@ -17,7 +17,7 @@ function Navbar({ }: NavbarProps) {
 	const [sidebarOpen, setSidebarOpen] = useState(false);
 	const [searchResults, setSearchResults] = useState<MovieResult[]>([]);
 	const [searching, setSearching] = useState(false);
-	
+
 
 
 	const debounced = useDebouncedCallback((value: string) => {
@@ -67,6 +67,13 @@ function Navbar({ }: NavbarProps) {
 	}
 
 	return (<nav className="fixed top-0 w-full py-4 bg-emerald-500 dark:bg-emerald-900 z-50">
+
+		<div className={clsx("fixed top-0 w-[100vw] h-[100vh] z-[100] opacity-0 xs:opacity-100 duration-500 backdrop-blur-sm bg-black/30", {
+			'translate-x-[100vw]': !sidebarOpen,
+			'-translate-x-[20rem]': sidebarOpen,
+		})}>
+		</div>
+
 		<div className="relative mx-auto responsive-width py-0 w-full h-full flex flex-row items-center">
 			<p className="font-bold text-4xl hidden sm:block mx-2">Moviie</p>
 
@@ -80,8 +87,8 @@ function Navbar({ }: NavbarProps) {
 					<Icon icon="mingcute:loading-3-line" className={clsx("absolute top-[10px] right-2 animate-spin w-6 h-6", {
 						"hidden": !searching
 					})} />
-					<Icon icon="gg:close" onClick={() => debounced("")} className={clsx("absolute text-slate-400 top-[12px] right-2 w-5 h-5", {
-						"hidden": searching
+					<Icon icon="gg:close" onClick={() => debounced("")} className={clsx("absolute hover:cursor-pointer text-slate-400 top-[12px] right-2 w-5 h-5", {
+						"hidden": searching || searchResults.length == 0
 					})} />
 				</div>
 
@@ -96,7 +103,8 @@ function Navbar({ }: NavbarProps) {
 
 		{/* 		<div className="fixed z-[40] top-0 left-0 w-[100vw] h-[100vh] bg-red-300 opacity-20"></div>
  */}
-		<aside className={clsx("fixed shadow-inner transition-all ease-in-out duration-200 z-50 p-4 top-0 right-0 w-full xs:w-[20rem] h-[100vh] bg-slate-300 dark:bg-slate-700", {
+
+		<aside className={clsx("fixed shadow-inner transition-all z-[101] ease-in-out duration-200 z-50 p-4 top-0 right-0 w-full xs:w-[20rem] h-[100vh] bg-slate-300 dark:bg-slate-700", {
 			'translate-x-[100vw]': !sidebarOpen,
 		})}>
 			<button onClick={() => setSidebarOpen(false)}>
