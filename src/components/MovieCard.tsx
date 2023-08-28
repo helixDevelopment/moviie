@@ -3,7 +3,7 @@ import { type MovieResult } from "moviedb-promise";
 import { useState, type PropsWithRef } from "react";
 
 
-import { Dialog } from 'primereact/dialog';
+import * as Dialog from '@radix-ui/react-dialog';
 import { Checkbox } from 'primereact/checkbox';
 
 type MovieProps = PropsWithRef<{
@@ -36,37 +36,51 @@ function MovieCard({ data }: MovieProps) {
 
 
 	return (
-		<div className="relative ease-in-out flex-shrink-0 w-[6rem] h-[9rem] sm:w-[10rem] sm:h-[15rem] bg-slate-200 m-2 rounded-md drop-shadow-md border-[1px]" >
-			<Dialog visible={isOpen} headerClassName="bg-red-500" header={data?.title} onHide={click} className="w-[90%] sm:w-[80%] max-w-xl h-fit">
-				<div className="flex flex-col w-full h-full bg-hsl(0, 0%, 100%)">
-					<div className="flex flex-col sm:flex-row w-full">
-						<div className="w-full max-w-[10rem] mx-auto sm:mx-0">
-							<img src={"https://image.tmdb.org/t/p/w500" + data?.poster_path} alt={data?.title} className="w-full rounded-md"></img>
-						</div>
-						<div className="pt-4 sm:pt-0 pl-0 sm:pl-4 w-fit">
-							<p>{data?.overview}</p>
-						</div>
-					</div>
-					<div className="mt-4 flex flex-row">
-						<div className="flex items-center">
-							<p>Seen</p>
-							<Checkbox className="m-2" onChange={e => setSeen(e.checked!)} checked={seen} />
-						</div>
+		<Dialog.Root>
 
-						<button className="border-2 rounded-md p-2 px-4 mx-2">{"Rate"}</button>
-						<button className="border-2 rounded-md p-2 px-4">{"Seen"}</button>
-					</div>
+			<div className="relative ease-in-out flex-shrink-0 w-[6rem] h-[9rem] sm:w-[10rem] sm:h-[15rem] bg-slate-200 m-2 rounded-md drop-shadow-md border-[1px]" >
+				<Dialog.Portal>
+					<Dialog.Overlay className="bg-blackA9 data-[state=open]:animate-overlayShow fixed inset-0" />
+					<Dialog.Content className="data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
+						<Dialog.Title>
+							{data?.title}
+						</ Dialog.Title>
+
+						<div className="flex flex-col w-full h-full bg-hsl(0, 0%, 100%)">
+							<div className="flex flex-col sm:flex-row w-full">
+								<div className="w-full max-w-[10rem] mx-auto sm:mx-0">
+									<img src={"https://image.tmdb.org/t/p/w500" + data?.poster_path} alt={data?.title} className="w-full rounded-md"></img>
+								</div>
+								<div className="pt-4 sm:pt-0 pl-0 sm:pl-4 w-fit">
+									<p>{data?.overview}</p>
+								</div>
+							</div>
+						</div>
+						<Dialog.Description />
+						<Dialog.Close asChild>
+							<button
+								className="text-violet11 hover:bg-violet4 focus:shadow-violet7 absolute top-[10px] right-[10px] inline-flex h-[25px] w-[25px] appearance-none items-center justify-center rounded-full focus:shadow-[0_0_0_2px] focus:outline-none"
+								aria-label="Close"
+							>
+								<Icon icon={"mdi:close"} className="w-5 h-5" />
+							</button>
+						</Dialog.Close>
+					</Dialog.Content>
+				</Dialog.Portal>
+
+
+				<div className="w-full absolute" onClick={click}>
+					<img src={"https://image.tmdb.org/t/p/w500" + data?.poster_path} alt={data?.title} className="w-full rounded-md"></img>
 				</div>
-			</Dialog>
 
-			<div className="w-full absolute" onClick={click}>
-				<img src={"https://image.tmdb.org/t/p/w500" + data?.poster_path} alt={data?.title} className="w-full rounded-md"></img>
+				<Dialog.Trigger asChild>
+					
+				<div className="absolute w-full h-full p-2 text-white transition-all opacity-0 hover:opacity-100 bg-black/70 rounded-md" onClick={click}>
+						<p className="text-center text-xs sm:text-base">{data?.title}</p>
+					</div>
+				</Dialog.Trigger>
 			</div>
-
-			<div className="absolute w-full h-full p-2 text-white transition-all opacity-0 hover:opacity-100 bg-black/70 rounded-md" onClick={click}>
-				<p className="text-center text-xs sm:text-base">{data?.title}</p>
-			</div>
-		</div>);
+		</Dialog.Root>);
 }
 
 export default MovieCard;
