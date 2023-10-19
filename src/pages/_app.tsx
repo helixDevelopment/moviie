@@ -2,34 +2,22 @@ import { type AppType } from "next/dist/shared/lib/utils";
 import "~/styles/globals.css";
 import { QueryClient, QueryClientProvider } from "react-query";
 
+import { Toaster } from "react-hot-toast";
+
 // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-assignment
 const queryClient: QueryClient = new QueryClient();
 
-
-import { PrimeReactProvider } from 'primereact/api';
-
-//theme
-import "primereact/resources/themes/lara-light-indigo/theme.css";
-
-//core
-import "primereact/resources/primereact.min.css";
-
-import { ThemeProvider } from "next-themes";
+import { Provider } from 'jotai'
 
 const MyApp: AppType = ({ Component, pageProps }) => {
 
     return (
-        <ThemeProvider
-            attribute="class"
-            value={{ light: "light", dark: "dark" }}
-            defaultTheme="system"
-        >
-            <PrimeReactProvider>
-                <QueryClientProvider client={queryClient}>
-                    <Component {...pageProps} />
-                </QueryClientProvider>
-            </PrimeReactProvider>
-        </ThemeProvider>
+        <Provider>
+            <QueryClientProvider client={queryClient}>
+                <Toaster position="bottom-center" />
+                <Component {...pageProps} />
+            </QueryClientProvider>
+        </Provider>
     )
 };
 

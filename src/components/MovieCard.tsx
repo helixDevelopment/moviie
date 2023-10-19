@@ -4,7 +4,6 @@ import { useState, type PropsWithRef } from "react";
 
 
 import * as Dialog from '@radix-ui/react-dialog';
-import { Checkbox } from 'primereact/checkbox';
 
 type MovieProps = PropsWithRef<{
 	data: MovieResult
@@ -25,11 +24,11 @@ function MovieCard({ data }: MovieProps) {
 	} */
 
 	if (!loaded) {
-		return (<div className="flex flex-col p-2 animate-pulse ease-in-out flex-shrink-0 w-[6rem] h-[9rem] sm:w-[10rem] sm:h-[15rem] bg-slate-100 dark:bg-slate-800 m-2 rounded-md">
+		return (<div className="flex flex-col p-2 animate-pulse ease-in-out flex-shrink-0 w-[6rem] h-[9rem] sm:w-[10rem] sm:h-[15rem] bg-slate-100 m-2 rounded-md">
 			<div className="flex h-full">
-				<Icon icon="bxs:movie" className="m-auto text-slate-200 dark:text-slate-600 w-10 h-10" />
+				<Icon icon="bxs:movie" className="m-auto text-slate-200 w-10 h-10" />
 			</div>
-			<div className="w-full h-6 rounded-md bg-slate-200 dark:bg-slate-600">
+			<div className="w-full h-6 rounded-md bg-slate-200">
 			</div>
 		</div>);
 	}
@@ -37,7 +36,6 @@ function MovieCard({ data }: MovieProps) {
 
 	return (
 		<Dialog.Root>
-
 			<div className="relative ease-in-out flex-shrink-0 w-[6rem] h-[9rem] sm:w-[10rem] sm:h-[15rem] bg-slate-200 m-2 rounded-md drop-shadow-md border-[1px]" >
 				<Dialog.Portal>
 					<Dialog.Overlay className="bg-blackA9 data-[state=open]:animate-overlayShow fixed inset-0" />

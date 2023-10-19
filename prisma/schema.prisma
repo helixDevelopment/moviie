@@ -11,9 +11,20 @@ datasource db {
 }
 
 model Movie {
-    id          String      
+    id          String      @id @default(uuid())
+    title       String
+
+    ratings     Rating[]    @relation("movieRatings")
+}
+
+model Rating {
+    id          String      @id @default(uuid())
+
+    movieID     String
+    movie       Movie       @relation("movieRatings", fields: [movieID], references: [id])
+
     userID      String      
-    user        User        @relation("userMovies", fields: [userID], references: [id])
+    user        User        @relation("userRatings", fields: [userID], references: [id])
 
     starred     Boolean     @default(false)
     rating      Int         @default(0)
@@ -23,15 +34,14 @@ model Movie {
     watched     Boolean     @default(false)
     watchDate   DateTime?   @default(now())
     watching    Boolean     @default(false)
-
-    @@id([id, userID])
 }
 
 model User {
-    id          String      @id
+    id          String      @id @default(uuid())
 
     username    String      @unique
+    email       String      @unique
     hashPw      String      // (Hashed password)
 
-    movies      Movie[]     @relation("userMovies")
+    ratings     Rating[]    @relation("userRatings")
 }

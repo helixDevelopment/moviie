@@ -8,7 +8,7 @@ import { useDebouncedCallback } from 'use-debounce';
 import axios from "axios";
 import { type MovieResult } from "moviedb-promise";
 import SearchResult from "./SearchResult";
-import ThemeSwitcher from "./ThemeSwitcher";
+import AccountControl from "./AccountControl";
 type NavbarProps = PropsWithRef<{
 	selected: string;
 }>;
@@ -17,8 +17,6 @@ function Navbar({ }: NavbarProps) {
 	const [sidebarOpen, setSidebarOpen] = useState(false);
 	const [searchResults, setSearchResults] = useState<MovieResult[]>([]);
 	const [searching, setSearching] = useState(false);
-
-
 
 	const debounced = useDebouncedCallback((value: string) => {
 		if (value.length == 0) {
@@ -66,7 +64,7 @@ function Navbar({ }: NavbarProps) {
 		</Link>;
 	}
 
-	return (<nav className="fixed top-0 w-full py-4 bg-emerald-500 dark:bg-emerald-900 z-50">
+	return (<nav className="fixed top-0 w-full py-4 bg-emerald-500 z-50">
 
 		<div className={clsx("fixed top-0 w-[100vw] h-[100vh] z-[100] opacity-0 xs:opacity-100 duration-500 backdrop-blur-sm bg-black/30", {
 			'translate-x-[100vw]': !sidebarOpen,
@@ -94,17 +92,14 @@ function Navbar({ }: NavbarProps) {
 
 			</form>
 
-			<ThemeSwitcher />
+			<AccountControl />
 
 			<button className="right-0 pl-2 sm:pl-4" onClick={() => setSidebarOpen(true)}>
 				<Icon icon="ion:menu-sharp" className="w-8 h-8" />
 			</button>
 		</div>
 
-		{/* 		<div className="fixed z-[40] top-0 left-0 w-[100vw] h-[100vh] bg-red-300 opacity-20"></div>
- */}
-
-		<aside className={clsx("fixed shadow-inner transition-all z-[101] ease-in-out duration-200 z-50 p-4 top-0 right-0 w-full xs:w-[20rem] h-[100vh] bg-slate-300 dark:bg-slate-700", {
+		<aside className={clsx("fixed shadow-inner transition-all z-[101] ease-in-out duration-200 z-50 p-4 top-0 right-0 w-full xs:w-[20rem] h-[100vh] bg-slate-300", {
 			'translate-x-[100vw]': !sidebarOpen,
 		})}>
 			<button onClick={() => setSidebarOpen(false)}>

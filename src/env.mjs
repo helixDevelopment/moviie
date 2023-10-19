@@ -10,6 +10,7 @@ export const env = createEnv({
         DATABASE_URL: z.string(),//.url(),
         TMDB_KEY: z.string().min(1),
         NODE_ENV: z.enum(["development", "test", "production"]),
+        SECRET_COOKIE_PASSWORD: z.string().min(1),
     },
 
     /**
@@ -29,6 +30,7 @@ export const env = createEnv({
         DATABASE_URL: process.env.DATABASE_URL,
         TMDB_KEY: process.env.TMDB_KEY,
         NODE_ENV: process.env.NODE_ENV,
+        SECRET_COOKIE_PASSWORD: process.env.SECRET_COOKIE_PASSWORD,
         // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
     },
     /**
