@@ -23,7 +23,7 @@ export const middleware = async (req: NextRequest) => {
     console.log("from middleware", { user });
 
     // demo:
-    if (user?.login !== "vvo") {
+    if (user?.username !== "vvo") {
         return new NextResponse(null, { status: 403 }); // unauthorized to see pages inside admin/
     }
 
