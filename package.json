@@ -17,7 +17,6 @@
         "@t3-oss/env-nextjs": "^0.3.1",
         "axios": "^1.4.0",
         "bcrypt-ts": "^4.0.0",
-        "clsx": "^2.0.0",
         "iron-session": "^6.3.1",
         "jotai": "^2.4.2",
         "moviedb-promise": "^3.4.1",
@@ -29,6 +28,7 @@
         "react-hot-toast": "^2.4.1",
         "react-modal": "^3.16.1",
         "react-query": "^3.39.3",
+        "react-spinners": "^0.13.8",
         "swr": "^2.2.4",
         "use-debounce": "^9.0.4",
         "zod": "^3.21.4"

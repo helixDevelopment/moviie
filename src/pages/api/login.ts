@@ -4,7 +4,7 @@ import { withIronSessionApiRoute } from "iron-session/next";
 import { sessionOptions } from "../../lib/session";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "~/server/db";
-import { hash } from "~/lib/hash";
+import { compare, hash } from "~/lib/hash";
 
 interface LoginParams {
     email: string;
@@ -20,10 +20,12 @@ async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
 
     try {
         const userData = await prisma.user.findUnique({
-            where: { email: email, hashPw: hash(password) },
+            where: { email: email },
         });
+
+        console.log(hash(password));
         
-        if (!userData) {
+        if (!userData || !compare(password, userData.hashPw)) {
             return res.status(401).json({ message: "Invalid credentials" });
         }
 

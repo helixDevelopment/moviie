@@ -1,8 +1,8 @@
 import useSWR from "swr";
-import type { ClientUser } from "../pages/api/user";
+import type { UserSession } from "./types";
 import type { Events } from "../pages/api/events";
 
-export default function useEvents(user: ClientUser | undefined) {
+export default function useEvents(user: UserSession | undefined) {
     // We do a request to /api/events only if the user is logged in
     
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment

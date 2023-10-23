@@ -6,3 +6,5 @@ export interface ExploreData {
 	toprated: MovieResult[];
 	nowplaying: MovieResult[];
 }
+
+export const fetcher = (url: string) => fetch(url).then((res) => res.json());

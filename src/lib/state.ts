@@ -1,11 +1,9 @@
 import { atom } from "jotai";
-import { type ClientUser } from "~/pages/api/user";
+import type { UserSession} from "./types";
 
-export const loggedin = atom(false);
-export const user = atom<ClientUser | null>(null);
+export const user = atom<UserSession | null>(null);
 
 const state = {
-	loggedin,
 	user,
 }
 

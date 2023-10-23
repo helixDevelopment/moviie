@@ -5,46 +5,24 @@ import axios from "axios";
 import { useAtom } from "jotai";
 import { type FormEventHandler, useCallback, useMemo, useState } from "react";
 import toast from "react-hot-toast";
+import { SyncLoader } from "react-spinners";
 
 import state from "~/lib/state";
-import type { UserSession } from "~/lib/types";
 import useUser from "~/lib/useUser";
- 
+
 function AccountControl() {
-	const [loggedin, setLoggedin] = useAtom(state.loggedin);
-	const { user, mutateUser } = useUser();
+	const { refresh } = useUser();
+	const [user] = useAtom(state.user);
 
 	const [loginType, setLoginType] = useState<"Login" | "Register">("Login");
 	const [pending, setPending] = useState(false);
-
-	const update = useCallback(() => {
-		return () => {
-			return 0;
-			if (loggedin) {
-				void fetch("/api/logout").then(res => {
-					if (res.ok) {
-						setLoggedin(false);
-					} else {
-						console.error(res);
-					}
-				});
-			} else {
-				// POST to /api/login
-				void axios.post("/api/login", {
-					username: "helixDevelopment",
-				}).then(res => {
-					if (res.status == 200) {
-						setLoggedin(true);
-					} else {
-						console.error(res);
-					}
-				});
-			}
-		}
-	}, [loggedin, setLoggedin]);
+	//const [userSession, setUserSession] = useAtom(state.userSession);
 
 	const handleRegister: FormEventHandler<HTMLFormElement> = useCallback((e) => {
 		e.preventDefault();
+
+		if (pending) return;
+		setPending(true);
 
 		const data = new FormData(e.currentTarget);
 
@@ -54,7 +32,14 @@ function AccountControl() {
 		const passwordConfirm = data.get("passwordConfirm");
 
 		if (password != passwordConfirm) {
-			console.error("Passwords do not match");
+			toast.error("Passwords do not match!");
+			setPending(false);
+			return;
+		}
+
+		if (email == user?.email && user?.isLoggedIn) {
+			toast.error("You are already logged in!");
+			setPending(false);
 			return;
 		}
 
@@ -65,21 +50,33 @@ function AccountControl() {
 		}).then(res => {
 			if (res.status == 200) {
 				toast.success("Registered successfully!");
+				void refresh();
 			} else {
 				toast.error("Could not register!");
 			}
 		}).catch(error => {
 			console.error(error);
 			toast.error("Could not register!");
+		}).finally(() => {
+			setPending(false);
 		});
-	}, []);
+	}, [pending, user, refresh]);
 
 	const handleLogin: FormEventHandler<HTMLFormElement> = useCallback((e) => {
 		e.preventDefault();
 
+		if (pending) return;
+		setPending(true);
+
 		const data = new FormData(e.currentTarget);
 		const email = data.get("email");
 		const password = data.get("password");
+
+		if (email == user?.email && user?.isLoggedIn) {
+			toast.error("You are already logged in!");
+			setPending(false);
+			return;
+		}
 
 		void axios.post("/api/login", {
 			email: email as string,
@@ -87,27 +84,38 @@ function AccountControl() {
 		}).then(res => {
 			console.log("login", res);
 			toast.success("Logged in successfully!");
+			void refresh();
 		}).catch(error => {
 			console.error(error);
 			toast.error("Could not login!");
+		}).finally(() => {
+			setPending(false);
 		});
+	}, [pending, user, refresh]);
 
-		console.log("email", email);
-		console.log("password", password);
-	}, []);
-
-	const handleLogout = void useCallback(async () => {
+	const handleLogout = useCallback(() => {
+		console.log("logout");
 		try {
-			const logout = await axios.get("/api/logout");
-			void mutateUser(logout.data as UserSession, false);
+			axios.get("/api/logout").then(res => {
+				console.log("logout", res);
+
+				if (res.status == 200) {
+					toast.success("Logged out successfully!");
+					void refresh();
+				}
+			}).catch(error => {
+				console.error(error);
+				toast.error("Could not logout!");
+			});
 		} catch (error) {
 			console.error(error);
+			toast.error("Could not logout!");
 		}
-	}, [mutateUser]);
+	}, [refresh]);
 
 	const RegisterForm = useMemo(() => {
 		return (
-			<Form.Root onSubmit={handleRegister} hidden={loggedin}>
+			<Form.Root onSubmit={handleRegister} hidden={user?.isLoggedIn}>
 				<Form.Field className="grid mb-[10px]" name="email">
 					<div className="flex items-baseline justify-between">
 						<Form.Label className="text-[15px] font-medium leading-[35px] text-slate-600">Email</Form.Label>
@@ -186,15 +194,15 @@ function AccountControl() {
 				</Form.Field>
 				<Form.Submit asChild>
 					<button className="w-full shadow-sm rounded-md border-emerald-900 bg-emerald-500 text-white p-2 mt-[10px]">
-						Register
+						{pending ? <SyncLoader className="scale-[0.4]" color="#ffffff" /> : "Register"}
 					</button>
 				</Form.Submit>
 			</Form.Root>)
-	}, [handleRegister, loggedin]);
+	}, [handleRegister, user, pending]);
 
 	const LoginForm = useMemo(() => {
 		return (
-			<Form.Root onSubmit={handleLogin} hidden={loggedin}>
+			<Form.Root onSubmit={handleLogin} hidden={user?.isLoggedIn}>
 				<Form.Field className="grid mb-[10px]" name="email">
 					<div className="flex items-baseline justify-between">
 						<Form.Label className="text-[15px] font-medium leading-[35px] text-slate-600">Email</Form.Label>
@@ -232,24 +240,24 @@ function AccountControl() {
 					</Form.Control>
 				</Form.Field>
 				<Form.Submit asChild>
-					<button className="w-full shadow-sm rounded-md border-emerald-900 bg-emerald-500 text-white p-2 mt-[10px]">
-						Login
+					<button disabled={pending} className="w-full shadow-sm rounded-md border-emerald-900 disabled:opacity-80 bg-emerald-500 text-white p-2 mt-[10px]">
+						{pending ? <SyncLoader className="scale-[0.4]" color="#ffffff" /> : "Login"}
 					</button>
 				</Form.Submit>
 			</Form.Root>)
-	}, [handleLogin, loggedin]);
+	}, [handleLogin, user, pending]);
 
 	const LogoutPanel = useMemo(() => {
 		return (
-			<button onClick={handleLogout}>Logout</button>
+			<button onClick={handleLogout}>Logout now</button>
 		)
 	}, [handleLogout]);
 
 	const Trigger = useMemo(() => {
 		return (
-			<p className="mx-2 p-2" onClick={update}>{loggedin ? "Logout" : "Login"}</p>
+			<p className="mx-2 p-2">{user?.isLoggedIn ? "Logout" : "Login"}</p>
 		)
-	}, [loggedin, update]);
+	}, [user]);
 
 	const LoginSwitch = useMemo(() => {
 		const loginTypeUpdate = () => setLoginType(loginType == "Login" ? "Register" : "Login");
@@ -271,15 +279,15 @@ function AccountControl() {
 				<Dialog.Overlay className="bg-blackA9 data-[state=open]:animate-overlayShow fixed inset-0" />
 				<Dialog.Content className="z-[100] data-[state=open]:animate-contentShow fixed top-[40%] sm:top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
 					<Dialog.Title>
-						<p className="text-center text-xl">{loggedin ? `Welcome!` : loginType}</p>
+						<p className="text-center text-2xl font-bold">{user?.isLoggedIn ? `Welcome!` : loginType}</p>
 					</ Dialog.Title>
 
 					{
-						loggedin ? LogoutPanel : (loginType == "Login" ? LoginForm : RegisterForm)
+						user?.isLoggedIn ? LogoutPanel : (loginType == "Login" ? LoginForm : RegisterForm)
 					}
 
 					{
-						!loggedin ? LoginSwitch : null
+						!user?.isLoggedIn ? LoginSwitch : null
 					}
 				</Dialog.Content>
 			</Dialog.Portal>
