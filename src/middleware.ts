@@ -30,6 +30,6 @@ export const middleware = async (req: NextRequest) => {
     return res;
 };
 
-/* export const config = {
+export const config = {
     matcher: "/admin",
-}; */
+};
